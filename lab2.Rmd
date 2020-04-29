@@ -1,0 +1,210 @@
+<br><br><br><center>![gerb](E:\smert/gerb.PNG "Герб")</center><br>
+<center><font size=5> **МИНОБРНАУКИ РОССИИ** </font></center>
+<center><font size=4> Федеральное государственное бюджетное образовательное учреждение </font></center>
+<center><font size=4> высшего образования </font></center>
+<center><font size=4> **«МИРЭА - Российский технологический университет»** </font></center>
+<center><font size=5> **РТУ МИРЭА** </font></center><br><br><br><br><br><br>
+<center><font size=4> Отчет по лабораторной работе на тему: **«Исследование сетевых параметров публичных DNS серверов»** </font></center>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+<div style="text-align:right"><font size=4> Выполнил: </font></div>
+<div style="text-align:right"><font size=4> студент 4 курса специальности 10.05.05, </font></div>
+<div style="text-align:right"><font size=4> группы ББСО-02-16 </font></div>
+<div style="text-align:right"><font size=4> Хохлова М.С. </font></div><br><br>
+<div style="text-align:right"><font size=4> Проверил: </font></div>
+<div style="text-align:right"><font size=4> Захарчук И.И. </font></div><br>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+<center><font size=4> **Москва 2020** </font></center><br><br><br><br>
+
+<font size=5> ***Цель работы:***<br><br>
+</font> <font size=4> **Проанализировать сетевые параметры публичных DNS серверов, сделать мотивированный вывод о предпочтительных серверах.**<br> <br>
+<font size=5>***Исходные данные:***</font><br><font size=4>
+
+1. **OS Kali Linux** 
+
+2. **RStudio IDE**</font><br><br><br>
+
+<font size=5>***Используемое ПО:***</font><br><font size=4>
+
+1. **tracert** 
+
+2. **ping**
+
+3. **whois**</font><br><br><br>
+
+<font size=5>***Исследуемые провайдеры DNS:***</font><br><font size=4>
+
+1. **qwerty DNS**
+
+2. **Google Public DNS** 
+
+3. **Cloudflare DNS** 
+
+4. **OpenDNS**</font><br><br><br><font size=5>
+
+
+<font size=5>***Ход работы:***</font><br><font size=4>
+
+1.**По исследуемым серверам собрать следующие данные:**
+
+* **маршрут;**
+
+* **местоположение каждого узла маршрута к DNS-серверу;**
+
+* **организацию, владеющую каждым узлом маршрута к DNS-серверу;**
+
+* **среднюю RTT к DNS-серверу.**
+
+2.**Выделить те узлы маршрута, которые вносят наибольшую временную задержку при передаче;**<br><br>
+3. **Сравнить сетевые параметры DNS серверов.**<br><br>
+
+Доступ к вебсайтам осуществляется по их IP-адресам либо доменным именам. Соответствие между доменными именами и их адресами хранится в иерархической структуре службы доменных серверов - DNS-серверов.
+
+<font size=5>***Данные DNS серверов:***</font><br><font size=4>
+
+```{}
+tracert 8.8.8.8
+```
+
+[8.8.8.8] Google Public DNS  
+
+Tracing route to ns.gptel.ru [77.73.24.2]
+over a maximum of 30 hops:
+
+№  | ping_1  | ping_2  | ping_3  |              Узел       | Местоположение |   Организация  | Средний RTT
+:-:|:-------:|:-------:|:-------:|:-----------------------:|:--------------:|:--------------:|:-----------:
+  1   |   1 ms    |   1 ms   |    2 ms  |  router.asus.com [192.168.1.1]|   Москва  | Домашний роутер |  1ms | 
+  2   |   2 ms    |   1 ms   |    2 ms  |  10.176.128.1                 |   Москва  | qwerty   |  3ms| 
+  3   |   3 ms    |   2 ms   |    2 ms  |  213.85.208.254               | 	Москва  | Russian Central Telegraph| 2ms | 
+  4   |   14 ms   |   13 ms  |    8 ms  |  188.254.54.237               |   Москва  | BROADBAND_INTERNET_ACCESS | 1ms |   
+  5   |   5 ms    |   3 ms   |    3 ms  |  72.14.205.132                | 	Southport      | Google LLC | 4ms |  
+  6   |   7 ms    |   3 ms   |    3 ms  |  108.170.250.51               |   Mountain View  | Google LLC | 5ms |   
+  7   |   20 ms   |   18 ms  |    18 ms |  216.239.50.44                |   United Kingdom | Google LLC | 10ms |  
+  8   |   19 ms   |   18 ms  |    19 ms |  74.125.253.94                | 	Alameda        | Google LLC | 20ms |   
+  9   |   19 ms   |   19 ms  |    21 ms |  172.253.51.221               | 	Mountain View  | Google LLC | 6ms |   
+ 10   |    *      |    *     |     *    |  Request timed out.           |  |  |  |   
+ 11   |    *      |    *     |     *    |  Request timed out.           |  |  |  |   
+ 12   |    *      |    *     |     *    |  Request timed out.           |  |  |  |   
+ 13   |    *      |    *     |     *    |  Request timed out.           |  |  |  |   
+ 14   |    *      |    *     |     *    |  Request timed out.           |  |  |  |   
+ 15   |    *      |    *     |     *    |  Request timed out.           |  |  |  |   
+ 16   |    *      |    *     |     *    |  Request timed out.           |  |  |  |   
+ 17   |    *      |    *     |     *    |  Request timed out.           |  |  |  |   
+ 18   |    *      |    *     |     *    |  Request timed out.           |  |  |  |   
+ 19   |   16 ms   |   16 ms  |  17 ms   |   dns.google [8.8.8.8]        | Нью-Йорк | Google LLC | 17ms |   
+ 
+ Trace complete.
+
+RTT=17ms<br><br>
+
+
+```{}
+tracert 1.1.1.1
+```
+
+[1.1.1.1] Cloudflare DNS    
+
+Tracing route to ns.gptel.ru [77.73.24.2]
+over a maximum of 30 hops:
+
+№  | ping_1  | ping_2  | ping_3  |                      Узел                             | Местоположение | Организация
+:-:|:-------:|:-------:|:-------:|:-----------------------------------------------------:|:--------------:|:-----------:
+ 1   |   18 ms   |    1 ms   |   1 ms   |   router.asus.com [192.168.1.1] |   Москва  | Домашний роутер | 1,5ms | 
+ 2   |    2 ms   |    2 ms   |   1 ms   |   10.176.128.1                  |     Москва  | qwerty   | 3,4ms| 
+ 3   |    3 ms   |    2 ms   |   4 ms   |   213.85.208.254                |   Москва  | Russian Central Telegraph | 2ms |
+ 4   |    3 ms   |    3 ms   |   3 ms   |   188.254.54.237                |   Москва  | BROADBAND_INTERNET_ACCESS | 2ms |  
+ 5   |    20 ms  |    13 ms  |   22 ms  |   213.59.212.235                |   Москва  |  	ROSTELECOM NETS  | 43ms |     
+ 6   |    41 ms  |    42 ms  |   46 ms  |   217.161.68.34                 |   Europe |  AS1273 Customer P2P links  |  51ms |     
+ 7   |    *      |    *      |    *     |   Request timed out.            |  |    |  |     
+ 8   |   43 ms   |    43 ms  |   49 ms  |   telia-gw.fnt.cw.net [195.2.22.238]|  Europe |  Cable & Wireless  | 57ms |    
+ 9   |   46 ms   |    43 ms  |   46 ms  |   cloudflare-ic-328337-ffm-b1.c.telia.net [62.115.144.199]   | Europe |   TeliaSonera AB | 44ms |     
+10   |   45 ms   |    42 ms  |   42 ms  |   one.one.one.one [1.1.1.1]    | Research, Australia |  	Cloudflare DNS   | 48ms |     
+
+Trace complete.
+
+RTT=48ms<br><br>
+
+
+```{}
+tracert 208.67.220.220
+```
+
+[208.67.220.220] OpenDNS  
+
+Tracing route to ns.gptel.ru [77.73.24.2]
+over a maximum of 30 hops:
+
+№  | ping_1  | ping_2  | ping_3  |                      Узел                             | Местоположение | Организация
+:-:|:-------:|:-------:|:-------:|:-----------------------------------------------------:|:--------------:|:-----------:
+  1  |   1 ms  |  <1 мс  |   2 ms | router.asus.com [192.168.1.1] |   Москва   | Домашний роутер | 2ms | 
+  2  |   2 ms  |   1 ms  |   1 ms | 10.176.128.1                  |       Москва  | qwerty  | 2ms | 
+  3  |   3 ms  |   6 ms  |   3 ms | 213.85.208.254                | 	Москва   | Russian Central Telegraph | 2,5ms | 
+  4  |   4 ms  |   4 ms  |   3 ms | 188.254.54.237                |   Москва   | BROADBAND_INTERNET_ACCESS | 3ms |   
+  5  |  34 ms  |  25 ms  |  42 ms | ae42.stkm-cr4.intl.ip.rostelecom.ru [87.226.133.51] | Москва |  	JSC Rostelecom  | 21ms |
+  6  |  20 ms  |  20 ms  |  20 ms | ae1-500.cr1-stk3.ip4.gtt.net [77.67.90.96] | Ireland  |  Tinet International Network  | 21ms |
+  7  |  49 ms  |  54 ms  |  49 ms | et-0-0-53.cr11-fra2.ip4.gtt.net [89.149.180.45] | Ireland  |  Tinet International Network  | 149ms |
+  8  |  50 ms  |  49 ms  |  60 ms | opendns-gw.ip4.gtt.net [77.67.95.70] | Ireland  |  Tinet International Network  | 55ms |
+  9  |  50 ms  |  51 ms  |  48 ms | resolver2.opendns.com [208.67.220.220] | San Francisco  |	OpenDNS, LLC  | 48ms |
+
+ Trace complete.
+
+RTT=48ms<br><br>
+
+
+```{}
+tracert 192.168.1.1
+```
+
+[192.168.1.1] qwerty DNS   
+
+Tracing route to ns.gptel.ru [77.73.24.2]
+over a maximum of 30 hops:
+
+№  | ping_1  | ping_2  | ping_3  |                      Узел                             | Местоположение | Организация
+:-:|:-------:|:-------:|:-------:|:-----------------------------------------------------:|:--------------:|:-----------:
+ 1  |  <1 ms  |  <1 ms  |  <1 ms | router.asus.com [192.168.1.1] | Москва   | Домашний роутер | 1ms |
+
+Trace complete.
+
+RTT=1ms<br><br>
+
+
+```{r, echo=FALSE}
+xt <- c(0,8,16,24,32,40,48,56,62,72,80,88,96,104,112,120,128,136,144,152,160)
+yh <- c(0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10)
+a <- c(1,3,2,1,4,5,10,20,6,17)
+aa <- c(1,2,3,4,5,6,7,8,9,10)
+b <- c(1.5,3.4,2,2,43,44,51,57,48)
+bb <- c(1,2,3,4,5,6,7,8,9)
+e <- c(2,2,2.5,3,21,21,149,55,48)
+ee <- c(1,2,3,4,5,6,7,8,9)
+d <- c(1)
+dd <- c(1)
+plot(yh,xt, main = "Сравнительная диаграмма RTT", xlab = "Шаг", ylab = "RTT",type = "n")
+points(aa,a,col = "red3")
+lines(aa,a,col = "red3")
+points(bb,b,col = "forestgreen")
+lines(bb,b,col = "forestgreen")
+points(ee,e,col = "steelblue")
+lines(ee,e,col = "steelblue")
+points(dd,d)
+lines(dd,d)
+
+```
+
+Красный - qwerty
+
+Зеленый - Cloudflare DNS
+
+Синий - OpenDNS
+
+Черный - Google Public DNS
+
+
+<font size=5>***Оценка результатов:***</font><br><font size=4>
+На графике видно, что больше всего времени потребовалось при обращении к (OpenDNS и Cloudflare DNS), меньше всего - к (qwerty DNS).<br>
+
+<font size=5>***Вывод:***</font><br><font size=4>
+В данной лабораторной работе с помощью команд 'tracert <ip>' и 'ping <ip>'мы рассмотрели параметры Google Public DNS, Cloudflare DNS, OpenDNS,qwerty DNS. 
+
+
+

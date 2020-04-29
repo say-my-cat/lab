@@ -1,0 +1,136 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
+<br><br><br><center>![gerb](E:\smert/gerb.PNG "Герб")</center><br>
+<center><font size=5> **МИНОБРНАУКИ РОССИИ** </font></center>
+<center><font size=4> Федеральное государственное бюджетное образовательное учреждение </font></center>
+<center><font size=4> высшего образования </font></center>
+<center><font size=4> **«МИРЭА - Российский технологический университет»** </font></center>
+<center><font size=5> **РТУ МИРЭА** </font></center><br><br><br><br><br><br>
+<center><font size=4> Отчет по лабораторной работе на тему: **«Получение информации с помощью 2ip.ru, Nmap, Linkonavt.ru, REG.ru»** </font></center>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+<div style="text-align:right"><font size=4> Выполнил: </font></div>
+<div style="text-align:right"><font size=4> студент 4 курса специальности 10.05.05, </font></div>
+<div style="text-align:right"><font size=4> группы ББСО-02-16 </font></div>
+<div style="text-align:right"><font size=4> Хохлова М.С. </font></div><br><br>
+<div style="text-align:right"><font size=4> Проверил: </font></div>
+<div style="text-align:right"><font size=4> Захарчук И.И. </font></div><br>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+<center><font size=4> **Москва 2020** </font></center><br><br><br><br>
+
+<font size=5> ***Цель работы:***<br>
+</font> <font size=5> **1.Выбрать 5 компаний из списка S&P 500**<br>
+**2. Собрать о них информацию**<br>
+**3. Составить таблицу** <br>
+
+<font size=5>***Исходные данные:***</font><br>
+1.**Asus Zenbook K46CB, Windows 10 Pro, сборка 1803** <br>
+2.**VM Kali linux** <br>
+3. **Web-sites 5 компаний** <br>
+
+<font size=5> ***Инструменты:*** Для поиска данных будем исполльзовать: <br>
+ 
+  Название|Назначение
+ :---:|:---:
+[2ip.ru](https://2ip.ru/) | портал сетевых сервисов
+[Nmap](https://nmap.online/) | утилита, предназначеная для сканирования ip-сетей, определение состояния сети (портов и сетевых служб)
+[REG.ru](https://www.reg.ru/) | регистрация доменных имен
+[Linkonavt.ru](https://linkonavt.ru/services/sitetechnologies) | определение используемых  web-приложений</font><br><br><br><br><br>
+
+<font size=5> ***Общий план выполнения:***<br>
+1.**Выбрать 5 компаний**</font><br><br><br><font size=5>
+ 
+ Название|Сектор деятельности
+ :---:|:---:
+ Southwest Airlines Co.| Авиакомпания
+  Estee Lauder Companies Inc. Class A | Средства по уходу
+ Anadarko Petroleum Corporation | Энергия
+ American Electric Power Company Inc. |	Электричество
+ Equinix Inc. |	Недвижимость</font><br><br><br><br><br>
+ 
+2.**С помощью сервиса 2ip.ru определим следующие признаки:**
+ 
+* *ip-адрес*<br>
+* *Местонахождение*<br>
+* *Телефон*<br>
+* *e-mail*<br>
+
+3.**Просканируем порты, используя операционную систему Linux, выполнив команду:**
+  <br><br>
+```{}
+nmap <домен_компании>/<ip_адрес> -p <номер_порта>
+```
+<br>
+4.**При помощи сервиса REG.ru определим кто занимается хостингом данной компании;**<br>
+**4) Используем Linkonavt.ru, чтобы определить web-приложения по домену.**<br><br><br>
+
+<font size=5> ***Сведения о компаниях:***<br>
+<font size=5> ***Southwest Airlines Co.*** </font><br><br><br>
+ 
+ Признак|Значение
+ :---:|:---:
+ Сайт | [southwest.com](https://www.southwest.com/)
+ ip-адрес | 66.150.1.229
+ Местонахождение | United States,	Dallas (Southwest Airlines P.O. Box 36647-1CR Dallas, Texas 75235)
+ Телефон | 1-800-I-FLY-SWA (1-800-435-9792)
+ e-mail |  domainrequest@wnco.com 
+ порты  |  ![порты](E:\smert/11.PNG "порты") 
+ хостинг  |  Name Server: ns-pdc.southwest.com; Name Server: ns-sdc.southwest.com
+ web-приложения | ![web-приложения](E:\smert/1.PNG "web-приложения")  </font><br><br><br><br><br>
+ 
+<font size=5> ***Estee Lauder Companies Inc. Class A.*** </font><br><br><br>
+ 
+ Признак|Значение
+ :---:|:---:
+ Сайт | [elcompanies.com](https://www.elcompanies.com/en)
+ ip-адрес | 52.17.142.199
+ Местонахождение |  US, NY
+ Телефон | +1.2083895770
+ e-mail | abusecomplaints@markmonitor.com
+ порты  |  ![порты](E:\smert/22.PNG "порты") 
+ хостинг  | Name Server: ns3.elcompanies.com; Name Server: ns4.elcompanies.com; Name Server: ns2.elcompanies.com; Name Server: ns5.elcompanies.com 
+ web-приложения | ![web-приложения](E:\smert/2.PNG "web-приложения")  </font><br><br><br><br><br> 
+ 
+ <font size=5> ***Anadarko Petroleum Corporation*** </font><br><br><br>
+ 
+ Признак|Значение
+ :---:|:---:
+ Сайт | [anadarko.com](http://www.anadarko.com/)
+ ip-адрес | 192.237.142.161
+ Местонахождение | United States, Texas (5 Greenway Plaza, Suite 110 Houston, Texas)
+ Телефон | +1.3026365400
+ e-mail | domainabuse@cscglobal.com
+ порты  |  ![порты](E:\smert/33.PNG "порты") 
+ хостинг  | Name Server: ns6.dnsmadeeasy.com; Name Server: ns5.dnsmadeeasy.com; Name Server: ns4.p05.dynect.net; Name Server: ns7.dnsmadeeasy.com; Name Server: ns2.p05.dynect.net; Name Server: ns3.p05.dynect.net; Name Server: ns1.p05.dynect.net 
+ web-приложения | ![web-приложения](E:\smert/3.PNG "web-приложения")  </font><br><br><br><br><br>
+ 
+ <font size=5> ***American Electric Power Company Inc.*** </font><br><br><br>
+ 
+ Признак|Значение
+ :---:|:---:
+ Сайт | [aep.com](http://www.aep.com/)
+ ip-адрес | 167.239.226.24
+ Местонахождение | United States, Columbus
+ Телефон | +1.2083895770
+ e-mail | abusecomplaints@markmonitor.com
+ порты  |  ![порты](E:\smert/44.PNG "порты") 
+ хостинг  | Name Server: ns3.aep.com; Name Server: ns4.aep.com 
+ web-приложения |![web-приложения](E:\smert/4.PNG "web-приложения")   </font><br><br><br><br><br>
+ 
+ <font size=5> ***Equinix Inc.*** </font><br><br><br>
+ 
+ Признак|Значение
+ :---:|:---:
+ Сайт | [equinix.com](https://www.equinix.com/)
+ ip-адрес | 216.221.225.13
+ Местонахождение | 	 United States, Redwood City
+ Телефон | +1.8887802723
+ e-mail | domainabuse@cscglobal.com
+ порты  |  ![порты](E:\smert/55.PNG "порты") 
+ хостинг  |  Name Server: edns116.ultradns.com; Name Server: edns116.ultradns.org; Name Server: edns116.ultradns.biz; Name Server: edns116.ultradns.net
+ web-приложения | ![web-приложения](E:\smert/5.PNG "web-приложения")  </font><br><br><br><br><br>
+ 
+ <font size=5> **Вывод:** </font><br><br>
+<font size=5> С помощью сервисов 2ip.ru,Nmap, Linkonavt.ru,REG.ru, Linkonavt.ru, получили различную информацию(телефон, местонахождение,e-mail, порты, web-приложения, хостинг, ip-адрес) об организациях. В дальнейшем можно использовать для раличных атак.</font>

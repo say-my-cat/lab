@@ -1,0 +1,206 @@
+<br><br><br><center>![gerb](/home/mari/Desktop/gerb.PNG "Герб")</center><br>
+<center><font size=5> **МИНОБРНАУКИ РОССИИ** </font></center>
+<center><font size=4> Федеральное государственное бюджетное образовательное учреждение </font></center>
+<center><font size=4> высшего образования </font></center>
+<center><font size=4> **«МИРЭА - Российский технологический университет»** </font></center>
+<center><font size=5> **РТУ МИРЭА** </font></center><br><br><br><br><br><br>
+<center><font size=4> Отчет по лабораторной работе на тему: **«Исследование возможностей автоматизации сбора данных о доменах»** </font></center>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+<div style="text-align:right"><font size=4> Выполнил: </font></div>
+<div style="text-align:right"><font size=4> студент 4 курса специальности 10.05.05, </font></div>
+<div style="text-align:right"><font size=4> группы ББСО-02-16 </font></div>
+<div style="text-align:right"><font size=4> Хохлова М.С. </font></div><br><br>
+<div style="text-align:right"><font size=4> Проверил: </font></div>
+<div style="text-align:right"><font size=4> Захарчук И.И. </font></div><br>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+<center><font size=4> **Москва 2020** </font></center><br><br><br><br>
+
+
+## Цель работы
+Собрать информацию о топ 15 доменах в одной из категорий https://www.alexa.com/topsites/category/Top/Computers 
+
+## Используемое ПО:
+1. Rstudio IDE
+2. nmap
+3. dig
+4. whois
+5. builtwith
+6. whatweb
+
+## Собираемые данные
+1. Домен
+2. IP
+3. IP Netblock
+3. Страна, город
+4. Адрес
+6. Сервера
+7. Открытые порты
+8. Используемые web-технологии на сайте
+
+## Исследуемые домены
+1. ericom.com
+2. comforte.com
+3. vypress.com
+4. robotiq.com
+5. parallax.com
+6. 2020e.com
+7. flexicell.com                                   
+8. cloos.de 
+9. sunrom.com
+10. strobotics.com
+11. pricesystems.com
+12. softstarsystems.com
+13. distributive.com
+14. softwaremetrics.com
+15. propricer.com
+
+## Содержание лабораторной работы:
+
+```{r cache=TRUE}
+library(tidyverse)
+get_sum_df <- function(company_url) {
+  country_state <- NA
+  dig <- system2('dig', company_url, stdout = TRUE)
+  ip <- dig %>%
+    grep(pattern = company_url, value = TRUE) %>%
+    str_extract(pattern = "\\b(?:[0-9]{1,3}\\.){3}[0-9]{1,3}\\b")
+  ip <- ip[!is.na(ip)]
+ 
+  whois <- system2('whois', ip[1], stdout = TRUE)
+  phones <- whois %>%
+    grep(pattern = "Phone", value = TRUE, ignore.case = TRUE) %>%
+    str_squish() %>%
+    str_split(pattern = " ") %>%
+    data.table::transpose() %>%
+    .[[2]] %>%
+    unique() %>%
+    str_c(collapse = " ")
+ 
+  netblock <- whois %>%
+    grep(pattern = "CIDR", value = TRUE, ignore.case = TRUE) %>%
+    str_squish() %>%
+    str_split(pattern = " ", simplify = TRUE) %>%
+    .[-1] %>%
+    str_c(collapse = " ")
+ 
+  country <- whois %>%
+    grep(pattern = "Country",
+         value = TRUE,
+         ignore.case = TRUE) %>%
+    str_squish() %>%
+    str_split(pattern = " ", simplify = TRUE) %>%
+    .[-1]
+ 
+  country_state <- whois %>%
+    grep(pattern = "State",
+         value = TRUE,
+         ignore.case = TRUE) %>%
+    str_squish() %>%
+    str_split(pattern = " ", simplify = TRUE) %>%
+    .[-1]
+  if(length(country_state)==0) country_state <- NA
+ 
+  address <- whois %>%
+    grep(pattern = "address",
+         value = TRUE,
+         ignore.case = TRUE) %>%
+    str_squish() %>%
+    str_split(pattern = " ", simplify = TRUE) %>%
+    .[-1] %>%
+    str_c(collapse = " ")
+ 
+  hosting <- whois %>%
+    grep(pattern = "Hosting",
+         value = TRUE,
+         ignore.case = TRUE) %>%
+    str_squish() %>%
+    str_split(pattern = " ")
+  hosting <- lapply(hosting, collapse = " ", str_c) %>%
+    str_c(collapse = " ")
+ 
+  nmap <-
+    system2('nmap',
+            args = c('-p', '22,21,80,443', ip[1]),
+            stdout = TRUE)
+  ports <- nmap %>%
+    grep(pattern = "open",
+         value = TRUE,
+         ignore.case = TRUE) %>%
+    str_squish() %>%
+    str_split(pattern = " ") %>%
+    data.table::transpose() %>%
+    .[[1]] %>%
+    str_c(collapse = " ")
+  ip <- str_c(ip,collapse = ' ')
+ 
+  company_sum <-
+    data.frame(
+      csum = c(
+        company_url,
+        ip,
+        netblock,
+        country,
+        country_state,
+        address,
+        phones,
+        hosting,
+        ports
+      ),
+      row.names = c(
+        'company_url',
+        'ip',
+        'netblock',
+        'country',
+        'country_state',
+        'address',
+        'phones',
+        'hosting',
+        'ports'
+      )
+    )
+  company_sum
+ 
+}
+ 
+urls <- c("ericom.com","comforte.com","vypress.com","robotiq.com","parallax.com","2020e.com","flexicell.com","cloos.de","sunrom.com","strobotics.com", "pricesystems.com", "softstarsystems.com", "distributive.com", "softwaremetrics.com", "propricer.com")  
+
+dfs <- lapply(urls, get_sum_df) 
+result <- bind_cols(dfs) 
+ 
+row.names(result) <- c('company_url',
+        'ip',
+        'netblock',
+        'country',
+        'country_state',
+        'address',
+        'phones',
+        'hosting',
+        'ports'
+      )
+colnames(result) <- map(result[1,],as.character) %>% unlist()
+result <- result[-1,]
+knitr::kable(result)
+```
+
+## Исспользуем web-технологии
+
+```{r cache=TRUE, message=FALSE, error=FALSE}
+library(rappalyzer)
+rappalyze("ericom.com")
+rappalyze("comforte.com")
+rappalyze("vypress.com")
+rappalyze("robotiq.com")
+rappalyze("parallax.com")
+rappalyze("2020e.com")
+rappalyze("flexicell.com")
+rappalyze("cloos.de")
+rappalyze("sunrom.com")
+rappalyze("strobotics.com")
+rappalyze("pricesystems.com")
+rappalyze("softstarsystems.com")
+rappalyze("distributive.com")
+rappalyze("softwaremetrics.com")
+rappalyze("propricer.com")
+```
+## Выводы
+В результате выполнения задачи, нами было получено достаточно универсальное решение по сбору информации о доменах. Разработанные средства поиска и сбора информации найдут свое применение в ходе дальнейшего изучения курса.
